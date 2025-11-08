@@ -11,6 +11,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { registerUser } from "../api/registerApi";
 
 const RegisterPage = () => {
+  const [error, setError] = useState("");
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -56,7 +57,7 @@ const RegisterPage = () => {
     } catch (error) {
       console.error("Registration error:", error);
       const errorMessage = error.response?.data?.message || "Registration failed. Please try again.";
-      alert(errorMessage);
+      setError(errorMessage);
     }
   };
 
@@ -150,6 +151,12 @@ const RegisterPage = () => {
           <MenuItem value="staff">Staff</MenuItem>
           <MenuItem value="admin">Admin</MenuItem>
         </TextField>
+
+        {error && (
+          <Typography color="error" sx={{ textAlign: "center", fontSize: "0.875rem" }}>
+            {error}
+          </Typography>
+        )}
 
         <Button
           variant="contained"
