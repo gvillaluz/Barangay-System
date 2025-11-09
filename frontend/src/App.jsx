@@ -1,19 +1,16 @@
-import React from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
-import { Container } from "@mui/material";
 
-// ✅ Import Pages
-import ResidentsPage from "./pages/ResidentsPage";
-import HouseholdsPage from "./pages/HouseholdsPage";
-import IncidentsPage from "./pages/IncidentsPage";
-import DocumentsPage from "./pages/DocumentsPage";
-import CertificatePage from "./pages/CertificatePage";
-import LoginPage from "./pages/LoginPage";
-import ProtectedRoute from "./pages/ProtectedRoute";
-import AdminRoute from "./pages/AdminRoute";
-import Register from "./pages/Register";
-import AdminDashboard from "./pages/AdminDashboard";
-import StaffDashboard from "./pages/StaffDashboard";
+import ResidentsPage from "./pages/management/ResidentsPage";
+import HouseholdsPage from "./pages/management/HouseholdsPage";
+import IncidentsPage from "./pages/management/IncidentsPage";
+import DocumentsPage from "./pages/document/DocumentsPage";
+import CertificatePage from "./pages/document/CertificatePage";
+import LoginPage from "./pages/auth/LoginPage";
+import ProtectedRoute from "./pages/auth/ProtectedRoute";
+import AdminRoute from "./pages/auth/AdminRoute";
+import Register from "./pages/auth/Register";
+import AdminDashboard from "./pages/dashboard/AdminDashboard";
+import StaffDashboard from "./pages/dashboard/StaffDashboard";
 import { getToken, getUserRole } from "./utils/auth";
 
 export default function App() {

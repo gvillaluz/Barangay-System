@@ -1,8 +1,8 @@
-import { Box, TextField, Typography, Button } from "@mui/material";
+import { Box, TextField, Typography, Button, Alert } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { loginUser } from "../api/loginApi";
-import { setToken } from "../utils/auth";
+import { loginUser } from "../../api/authApi";
+import { setToken, getUserRole } from "../../utils/auth";
 
 const LoginPage = () => {
   const [loginInfo, setLoginInfo] = useState({
@@ -16,7 +16,6 @@ const LoginPage = () => {
   const handleOnChange = (e) => {
     const { name, value } = e.target;
     setLoginInfo((prev) => ({ ...prev, [name]: value }));
-    setError("");
   };
 
   const handleLogin = async (e) => {
@@ -29,8 +28,12 @@ const LoginPage = () => {
       
       if (response.data.success && response.data.token) {
         setToken(response.data.token);
-        // Navigate based on role
-        const role = JSON.parse(atob(response.data.token.split(".")[1])).role;
+
+        const role = getUserRole();
+
+        if (role === null)
+          navigate("/");
+
         if (role === "admin") {
           navigate("/dashboard/admin");
         } else {
@@ -98,9 +101,9 @@ const LoginPage = () => {
       />
 
       {error && (
-        <Typography color="error" sx={{ textAlign: "center", fontSize: "0.875rem" }}>
+        <Alert severity="error">
           {error}
-        </Typography>
+        </Alert>
       )}
 
       <Button
@@ -114,7 +117,6 @@ const LoginPage = () => {
         {loading ? "Logging in..." : "Login"}
       </Button>
 
-      {/* Register link at the bottom */}
       <Typography sx={{ textAlign: "center", marginTop: "10px" }}>
         Don’t have an account?{" "}
         <Link

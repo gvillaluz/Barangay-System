@@ -13,7 +13,7 @@ export const verifyAdmin = async (req, res, next) => {
       });
     }
 
-    const decoded = jwt.verify(token, process.env.SECRET);
+    const decoded = jwt.verify(token, process.env.SECRET_KEY);
 
     if (decoded.role !== "admin") {
       return res.status(403).json({

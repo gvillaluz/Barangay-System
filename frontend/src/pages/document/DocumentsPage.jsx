@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { getDocuments, deleteDocument } from "../api/documentsApi";
-import DocumentForm from "../components/DocumentForm";
+import { getDocuments, deleteDocument } from "../../api/documentsApi";
+import DocumentForm from "../../components/forms/DocumentForm";
 import {
   Button,
   Table,
@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import { ArrowBack as ArrowBackIcon } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import { isAdmin } from "../utils/auth";
+import { isAdmin } from "../../utils/auth";
 
 export default function DocumentsPage() {
   const navigate = useNavigate();

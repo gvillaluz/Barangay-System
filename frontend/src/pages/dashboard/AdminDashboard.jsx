@@ -7,18 +7,37 @@ import {
   CardActions,
   Button,
   Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  IconButton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  MenuItem,
+  Alert,
+  CircularProgress,
 } from "@mui/material";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { logout } from "../utils/auth";
+import { logout, getUserInfo } from "../../utils/auth";
 import {
   People as PeopleIcon,
   Home as HomeIcon,
   Report as ReportIcon,
   Description as DescriptionIcon,
-  Assignment as CertificateIcon,
+  Assignment as CertificateIcon
 } from "@mui/icons-material";
+import { getAllUsers, updateUser, deleteUser } from "../../api/usersApi";
+import DashboardHeader from "../../components/dashboard/DashboardHeader";
+import UserContainer from "../../components/dashboard/UserContainer";
 
-const StaffDashboard = () => {
+const AdminDashboard = () => {
   const handleLogout = () => {
     logout();
   };
@@ -69,17 +88,17 @@ const StaffDashboard = () => {
           sx={{
             p: 4,
             mb: 4,
-            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+            background: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
             color: "white",
           }}
         >
           <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <Box>
               <Typography variant="h4" sx={{ fontWeight: "bold", mb: 1 }}>
-                Staff Dashboard
+                Admin Dashboard
               </Typography>
               <Typography variant="body1" sx={{ opacity: 0.9 }}>
-                Welcome to the Barangay Information System
+                Manage users and system operations
               </Typography>
             </Box>
             <Button
@@ -93,7 +112,7 @@ const StaffDashboard = () => {
           </Box>
         </Paper>
 
-        <Box sx={{ display: "flex", gap: 3, flexWrap: "nowrap", overflowX: "auto" }}>
+        <Box sx={{ display: "flex", gap: 3, mb: 4, flexWrap: "nowrap", overflowX: "auto" }}>
           {dashboardCards.map((card, index) => (
             <Card
               key={index}
@@ -144,10 +163,13 @@ const StaffDashboard = () => {
               </Card>
           ))}
         </Box>
+
+        {/* User Management Section */}
+        <UserContainer />
       </Container>
     </Box>
   );
 };
 
-export default StaffDashboard;
+export default AdminDashboard;
 

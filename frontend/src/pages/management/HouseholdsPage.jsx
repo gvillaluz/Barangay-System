@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { getHouseholds, createHousehold, deleteHousehold } from "../api/householdsApi";
-import HouseholdForm from "../components/HouseholdForm";
+import { getHouseholds, createHousehold, deleteHousehold } from "../../api/householdsApi";
+import HouseholdForm from "../../components/forms/HouseholdForm";
 import { Button, Typography, Table, TableHead, TableRow, TableCell, TableBody, Container } from "@mui/material";
 import { ArrowBack as ArrowBackIcon } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import { isAdmin } from "../utils/auth";
+import { isAdmin } from "../../utils/auth";
 
 const HouseholdsPage = () => {
   const navigate = useNavigate();

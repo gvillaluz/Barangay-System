@@ -5,13 +5,15 @@ import {
   Button,
   MenuItem,
   Paper,
+  Alert
 } from "@mui/material";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { registerUser } from "../api/registerApi";
+import { registerUser } from "../../api/authApi";
 
 const RegisterPage = () => {
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -30,14 +32,12 @@ const RegisterPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Basic validation
     if (!formData.role) {
       alert("Please select a role");
       return;
     }
 
     try {
-      // Map frontend field names to backend field names
       const userData = {
         username: formData.username,
         firstname: formData.firstName,
@@ -49,8 +49,12 @@ const RegisterPage = () => {
       const response = await registerUser(userData);
       
       if (response.data.success) {
-        alert("Registration successful!");
-        navigate("/");
+        setError("")
+        setSuccess(response.data.message + " Redirecting to login...");
+        
+        setTimeout(() => {
+          navigate("/");
+        }, 3000)
       } else {
         alert(response.data.message || "Registration failed");
       }
@@ -152,10 +156,16 @@ const RegisterPage = () => {
           <MenuItem value="admin">Admin</MenuItem>
         </TextField>
 
+        {success && (
+          <Alert severity="success">
+            {success}
+          </Alert>
+        )}
+
         {error && (
-          <Typography color="error" sx={{ textAlign: "center", fontSize: "0.875rem" }}>
+          <Alert severity="error">
             {error}
-          </Typography>
+          </Alert>
         )}
 
         <Button
@@ -164,13 +174,13 @@ const RegisterPage = () => {
           type="submit"
           sx={{
            mt: 1,
-    py: 1,
-    fontWeight: "bold",
-    fontSize: "1rem",
-    borderRadius: "8px",
-  }}
-  >
-  Register
+            py: 1,
+            fontWeight: "bold",
+            fontSize: "1rem",
+            borderRadius: "8px",
+          }}
+        >
+          Register
         </Button>
         <Typography
           variant="body2"

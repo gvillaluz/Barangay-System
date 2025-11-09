@@ -1,5 +1,5 @@
 import { Outlet, Navigate } from 'react-router-dom';
-import { isAdmin } from '../utils/auth';
+import { isAdmin } from '../../utils/auth';
 
 const AdminRoute = () => {
     const isUserAdmin = isAdmin();

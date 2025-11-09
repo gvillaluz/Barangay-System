@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { getIncidents, createIncident, deleteIncident } from "../api/incidentsApi";
-import IncidentForm from "../components/IncidentForm";
+import { getIncidents, createIncident, deleteIncident } from "../../api/incidentsApi";
+import IncidentForm from "../../components/forms/IncidentForm";
 import { Button, Typography, Table, TableHead, TableRow, TableCell, TableBody, Container } from "@mui/material";
 import { ArrowBack as ArrowBackIcon } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import { isAdmin } from "../utils/auth";
+import { isAdmin } from "../../utils/auth";
 
 const IncidentsPage = () => {
   const navigate = useNavigate();

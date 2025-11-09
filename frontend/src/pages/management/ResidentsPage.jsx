@@ -75,9 +75,9 @@ import {
 } from '@mui/material'
 import { ArrowBack as ArrowBackIcon } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
-import { getResidents, deleteResident } from '../api/residentsApi'
-import ResidentForm from '../components/residentForm'
-import { isAdmin } from '../utils/auth'
+import { getResidents, deleteResident } from '../../api/residentsApi'
+import ResidentForm from '../../components/forms/residentForm'
+import { isAdmin } from '../../utils/auth'
 
 export default function ResidentsPage() {
   const navigate = useNavigate()

@@ -3,7 +3,7 @@ import { useReactToPrint } from "react-to-print";
 import { Container, Button, Paper, TextField, Typography, Box } from "@mui/material";
 import { ArrowBack as ArrowBackIcon } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import { isAdmin } from "../utils/auth";
+import { isAdmin } from "../../utils/auth";
 
 export default function CertificatePage() {
   const navigate = useNavigate();

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { createDocument } from "../api/documentsApi";
+import { createDocument } from "../../api/documentsApi";
 import { DialogTitle, DialogContent, TextField, DialogActions, Button } from "@mui/material";
 
 export default function DocumentForm({ onClose, reload }) {
