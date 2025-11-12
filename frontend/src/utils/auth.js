@@ -1,4 +1,4 @@
-// Utility functions for authentication and role management
+import { jwtDecode } from 'jwt-decode';
 
 export const getToken = () => {
   return localStorage.getItem("token");
@@ -61,8 +61,22 @@ export const isStaff = () => {
   return getUserRole() === "staff";
 };
 
-export const logout = () => {
-  removeToken();
-  window.location.href = "/";
-};
+export const verifyToken = () => {
+  const token = localStorage.getItem("token");
 
+  if (!token)
+    return true;
+
+  const decoded = jwtDecode(token);
+
+  console.log(decoded.exp)
+
+  const isExpired = decoded.exp * 1000 < Date.now();
+
+  if (isExpired) {
+    removeToken();
+    return true;
+  }
+
+  return false;
+}

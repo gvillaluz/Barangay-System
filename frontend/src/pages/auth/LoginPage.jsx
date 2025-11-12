@@ -35,9 +35,9 @@ const LoginPage = () => {
           navigate("/");
 
         if (role === "admin") {
-          navigate("/dashboard/admin");
+          navigate("/dashboard/admin", { replace: true });
         } else {
-          navigate("/dashboard/staff");
+          navigate("/dashboard/staff", { replace: true });
         }
       } else {
         setError(response.data.message || "Login failed");
@@ -70,14 +70,16 @@ const LoginPage = () => {
       onSubmit={handleLogin}
     >
       <Typography
-        sx={{
-          textAlign: "center",
-          marginBottom: "20px",
-          fontSize: "1.5em",
-        }}
-      >
-        Login
-      </Typography>
+          variant="h5"
+          sx={{
+            fontWeight: "bold",
+            textAlign: "center",
+            color: "#1976d2",
+            mb: 2,
+          }}
+        >
+          Log in to your account
+        </Typography>
 
       <TextField
         label="Username"

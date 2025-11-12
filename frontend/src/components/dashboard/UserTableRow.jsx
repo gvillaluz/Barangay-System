@@ -4,10 +4,10 @@ import {
     Edit as EditIcon
 } from "@mui/icons-material";
 
-const UserTableRow = ({ user, handleEditClick, handleDeleteClick }) => {
+const UserTableRow = ({ user, handleEditClick, handleDeleteClick, currentUser }) => {
     return (
-        <TableRow key={user.id} hover>
-            <TableCell>{user.id}</TableCell>
+        <TableRow hover>
+            <TableCell>{user.user_id}</TableCell>
             <TableCell>{user.username}</TableCell>
             <TableCell>{user.firstname}</TableCell>
             <TableCell>{user.lastname}</TableCell>
@@ -31,14 +31,14 @@ const UserTableRow = ({ user, handleEditClick, handleDeleteClick }) => {
                 <IconButton
                     color="primary"
                     onClick={() => handleEditClick(user)}
-                    disabled={user.id === currentUser?.id}
+                    disabled={user.user_id === currentUser?.userId}
                 >
                     <EditIcon />
                 </IconButton>
                 <IconButton
                     color="error"
                     onClick={() => handleDeleteClick(user)}
-                    disabled={user.id === currentUser?.id}
+                    disabled={user.user_id === currentUser?.userId}
                 >
                     <DeleteIcon />
                 </IconButton>

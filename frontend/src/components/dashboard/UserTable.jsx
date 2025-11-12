@@ -1,14 +1,24 @@
 import UserTableRow from "./UserTableRow";
 import { Box, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, CircularProgress, Typography } from "@mui/material";
 
-const UserTable = ({ users, loading, handleEditClick, handleDeleteClick }) => {
+const UserTable = ({ users, loading, handleEditClick, handleDeleteClick, currentUser }) => {
     return (
         loading ? (
-            <Box sx={{ display: "flex", justifyContent: "center", p: 4 }}>
+            <Box sx={{ 
+                  display: "flex", 
+                  justifyContent: "center", 
+                  p: 4,
+                  mt: 2
+              }}
+            >
               <CircularProgress />
             </Box>
           ) : (
-            <TableContainer>
+            <TableContainer
+              sx={{
+                mt: 2
+              }}
+            >
               <Table>
                 <TableHead>
                   <TableRow sx={{ bgcolor: "#f5f5f5" }}>
@@ -30,9 +40,11 @@ const UserTable = ({ users, loading, handleEditClick, handleDeleteClick }) => {
                   ) : (
                     users.map((user) => (
                         <UserTableRow 
+                          key={user.user_id}
                           user={user} 
                           handleEditClick={handleEditClick}
                           handleDeleteClick={handleDeleteClick}
+                          currentUser={currentUser}
                         />
                     ))
                   )}

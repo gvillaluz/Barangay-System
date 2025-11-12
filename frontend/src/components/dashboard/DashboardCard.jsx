@@ -1,15 +1,16 @@
 import { Card, CardContent, Button, CardActions, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 
-const DashboardCard = ({ card, index }) => {
+const DashboardCard = ({ card }) => {
     return (
         <Card
-              key={index}
               sx={{
                 minWidth: 0,
                 flex: "1 1 0",
-                height: "350px",
+                height: "300px",
                 display: "flex",
                 flexDirection: "column",
+                bgcolor: card.color,
                 transition: "transform 0.2s, box-shadow 0.2s",
                 "&:hover": {
                   transform: "translateY(-5px)",
@@ -24,7 +25,6 @@ const DashboardCard = ({ card, index }) => {
                     flexDirection: "column",
                     alignItems: "center",
                     textAlign: "center",
-                    bgcolor: card.color,
                     pt: 4,
                   }}
                 >

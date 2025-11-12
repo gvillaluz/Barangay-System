@@ -11,11 +11,10 @@ import usersRoutes from './routes/users.js';
 
 dotenv.config()
 
-const app = express()
+const app = express() 
 app.use(cors())
 app.use(express.json())
 
-// ✅ ADD THIS: Serve uploaded images statically from the "uploads" folder
 app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')))
 
 app.use("/api/auth", authRoutes)

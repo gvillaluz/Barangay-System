@@ -6,6 +6,9 @@ import jwt from "jsonwebtoken";
 export const verifyAdmin = async (req, res, next) => {
   try {
     const token = req.headers.authorization?.split(" ")[1];
+
+    console.log("Token: " + token)
+
     if (!token) {
       return res.status(401).json({
         success: false,
@@ -36,7 +39,7 @@ export const verifyAdmin = async (req, res, next) => {
 export const getAllUsers = async (req, res) => {
   try {
     const [users] = await pool.query(
-      "SELECT id, username, firstname, lastname, role FROM users ORDER BY id ASC"
+      "SELECT user_id, username, firstname, lastname, role FROM users ORDER BY user_id ASC"
     );
 
     return res.status(200).json({
@@ -58,7 +61,7 @@ export const getUserById = async (req, res) => {
     const { id } = req.params;
 
     const [users] = await pool.query(
-      "SELECT id, username, firstname, lastname, role FROM users WHERE id = ?",
+      "SELECT user_id, username, firstname, lastname, role FROM users WHERE user_id = ?",
       [id]
     );
 
@@ -97,7 +100,7 @@ export const updateUser = async (req, res) => {
 
     // Check if username already exists (excluding current user)
     const [existingUsers] = await pool.query(
-      "SELECT id FROM users WHERE username = ? AND id != ?",
+      "SELECT user_id FROM users WHERE username = ? AND user_id != ?",
       [username, id]
     );
 
@@ -118,7 +121,7 @@ export const updateUser = async (req, res) => {
       queryParams.push(hashedPassword);
     }
 
-    updateQuery += " WHERE id = ?";
+    updateQuery += " WHERE user_id = ?";
     queryParams.push(id);
 
     const [result] = await pool.query(updateQuery, queryParams);
@@ -151,7 +154,7 @@ export const deleteUser = async (req, res) => {
     // Prevent deleting own account
     const token = req.headers.authorization?.split(" ")[1];
     if (token) {
-      const decoded = jwt.verify(token, process.env.SECRET);
+      const decoded = jwt.verify(token, process.env.SECRET_KEY);
       if (decoded.id === parseInt(id)) {
         return res.status(400).json({
           success: false,
@@ -160,7 +163,7 @@ export const deleteUser = async (req, res) => {
       }
     }
 
-    const [result] = await pool.query("DELETE FROM users WHERE id = ?", [id]);
+    const [result] = await pool.query("DELETE FROM users WHERE user_id = ?", [id]);
 
     if (result.affectedRows === 0) {
       return res.status(404).json({

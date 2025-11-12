@@ -12,6 +12,7 @@ import Register from "./pages/auth/Register";
 import AdminDashboard from "./pages/dashboard/AdminDashboard";
 import StaffDashboard from "./pages/dashboard/StaffDashboard";
 import { getToken, getUserRole } from "./utils/auth";
+import RootRoute from "./pages/auth/RootRoute";
 
 export default function App() {
   const isLoggedIn = getToken() !== null;
@@ -22,17 +23,7 @@ export default function App() {
         <Routes>
           <Route 
             path="/" 
-            element={
-              isLoggedIn ? (
-                getUserRole() === "admin" ? (
-                  <Navigate to="/dashboard/admin" replace />
-                ) : (
-                  <Navigate to="/dashboard/staff" replace />
-                )
-              ) : (
-                <LoginPage />
-              )
-            } 
+            element={<RootRoute />} 
           />
           <Route path="/register" element={<Register />} />
           <Route element={<ProtectedRoute />}>

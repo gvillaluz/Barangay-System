@@ -1,7 +1,7 @@
 import { Paper, Box, Typography, Button } from '@mui/material';
 import {  isAdmin } from '../../utils/auth';
 
-const DashboardHeader = () => {
+const DashboardHeader = ({ handleLogout }) => {
     const admin = isAdmin();
 
     return (
@@ -18,7 +18,7 @@ const DashboardHeader = () => {
           <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <Box>
               <Typography variant="h4" sx={{ fontWeight: "bold", mb: 1 }}>
-                Admin Dashboard
+                {admin ? "Admin" : "Staff"} Dashboard
               </Typography>
               <Typography variant="body1" sx={{ opacity: 0.9 }}>
                 Manage users and system operations

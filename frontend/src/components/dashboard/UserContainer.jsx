@@ -1,5 +1,5 @@
 import UserTable from "./UserTable";
-import { Paper, Box, Typography, Button } from "@mui/material";
+import { Paper, Box, Typography, Button, Alert } from "@mui/material";
 import { Link } from "react-router-dom";
 import { 
     AdminPanelSettings as AdminIcon,
@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import EditUserDialog from "./EditUserDialog";
 import ConfirmDeleteDialog from "./ConfirmDeleteDialog";
 import { getAllUsers, updateUser, deleteUser } from "../../api/usersApi";
+import { getUserInfo } from "../../utils/auth";
 
 const UserContainer = () => {
     const [users, setUsers] = useState([]);
@@ -18,6 +19,7 @@ const UserContainer = () => {
     const [editDialogOpen, setEditDialogOpen] = useState(false);
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
+    const [currentUser, setCurrentUser] = useState({});
     const [editFormData, setEditFormData] = useState({
         username: "",
         firstname: "",
@@ -48,6 +50,7 @@ const UserContainer = () => {
 
     useEffect(() => {
         fetchUsers();
+        setCurrentUser(getUserInfo());
     }, []);
 
     const handleEditClick = (user) => {
@@ -69,11 +72,16 @@ const UserContainer = () => {
     const handleEditSubmit = async () => {
         try {
           setError("");
-          const response = await updateUser(selectedUser.id, editFormData);
+          const response = await updateUser(selectedUser.user_id, editFormData);
           if (response.data.success) {
             setSuccess("User updated successfully");
             setEditDialogOpen(false);
-            fetchUsers();
+
+            setUsers(users.map(u => u.user_id === selectedUser.user_id
+              ? {...u, ...editFormData}
+              : u
+            ));
+
             setTimeout(() => setSuccess(""), 3000);
           } else {
             const errorMessage = response.data.message || "Failed to update user";
@@ -93,18 +101,25 @@ const UserContainer = () => {
     
     const handleDeleteConfirm = async () => {
         try {
+          if (!selectedUser) {
+            console.log("NO SELECTED USER!!!!!")
+            return;
+          }
+
           setError("");
-          if (selectedUser.id === currentUser?.id) {
+          if (selectedUser.user_id === currentUser?.userId) {
             setError("You cannot delete your own account");
             setDeleteDialogOpen(false);
             return;
           }
     
-          const response = await deleteUser(selectedUser.id);
+          const response = await deleteUser(selectedUser.user_id);
           if (response.data.success) {
             setSuccess("User deleted successfully");
             setDeleteDialogOpen(false);
-            fetchUsers();
+
+            setUsers(users.filter(u => u.user_id !== selectedUser.user_id));
+
             setTimeout(() => setSuccess(""), 3000);
           } else {
             const errorMessage = response.data.message || "Failed to delete user";
@@ -140,27 +155,44 @@ const UserContainer = () => {
             </Button>
           </Box>
 
+          {success && (
+            <Alert severity="success">
+              {success}
+            </Alert>
+          )}
+
+          {error && (
+            <Alert severity="error">
+              {error}
+            </Alert>
+          )}
+
           <UserTable 
             users={users} 
             loading={loading} 
             handleEditClick={handleEditClick} 
             handleDeleteClick={handleDeleteClick}
+            currentUser={currentUser}
           />
 
-          <EditUserDialog 
-            editDialogOpen={editDialogOpen}
-            setEditDialogOpen={setEditDialogOpen} 
-            editFormData={editFormData}
-            setEditFormData={setEditFormData}
-            handleEditSubmit={handleEditSubmit}
-          />
+          {editDialogOpen && (
+            <EditUserDialog 
+              editDialogOpen={editDialogOpen}
+              setEditDialogOpen={setEditDialogOpen} 
+              editFormData={editFormData}
+              setEditFormData={setEditFormData}
+              handleEditSubmit={handleEditSubmit}
+            />
+          )}
 
-          <ConfirmDeleteDialog 
-            deleteDialogOpen={deleteDialogOpen}
-            selectedUser={selectedUser}
-            handleDeleteConfirm={handleDeleteConfirm}
-            setDeleteDialogOpen={setDeleteDialogOpen}
-          />
+          {deleteDialogOpen && (
+            <ConfirmDeleteDialog 
+              deleteDialogOpen={deleteDialogOpen}
+              selectedUser={selectedUser}
+              handleDeleteConfirm={handleDeleteConfirm}
+              setDeleteDialogOpen={setDeleteDialogOpen}
+            />
+          )}
         </Paper>
     )
 }
