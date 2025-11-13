@@ -15,11 +15,28 @@ export const HouseholdProvider = ({ children }) => {
 
     const [initialResidents, setInitialResidents] = useState([]);
 
+    const handleSaveResident = (resident) => {
+        try {
+            for (let key in resident) {
+                if (resident[key] === null || resident[key] === '') {
+                    throw new Error("Some fields are empty.");
+                }
+            }
+
+            setInitialResidents((prev) => ([...prev, resident]));
+
+            initialResidents.forEach(res =>  alert(res.firstname));
+        } catch (err) {
+            alert(err);
+        }
+    }
+
     const value = {
         newHousehold,
         setNewHousehold,
         initialResidents,
-        setInitialResidents
+        setInitialResidents,
+        handleSaveResident
     }
 
     return <HouseholdContext.Provider value={value}>
