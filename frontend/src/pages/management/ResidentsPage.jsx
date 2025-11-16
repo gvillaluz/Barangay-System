@@ -15,7 +15,7 @@ import {
 import { ArrowBack as ArrowBackIcon } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
 import { getResidents, deleteResident } from '../../api/residentsApi'
-import ResidentForm from '../../components/forms/residentForm'
+import ResidentForm from '../../components/management/residents/forms/residentForm'
 import { isAdmin } from '../../utils/auth'
 import ResidentTable from '../../components/management/residents/ResidentsTable'
 

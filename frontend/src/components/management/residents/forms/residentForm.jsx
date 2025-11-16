@@ -14,7 +14,7 @@ import {
   Avatar,
   Box
 } from '@mui/material'
-import { createResident, updateResident } from '../../api/residentsApi'
+import { createResident, updateResident } from '../../../../api/residentsApi'
 
 const initialForm = {
   first_name: '',

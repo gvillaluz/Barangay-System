@@ -2,13 +2,7 @@ import { findUserbyUsername, insertUser, checkUsernameExists } from "../models/u
 import { hasNullValues } from "../utils/validationUtils.js";
 import bcrypt from "bcryptjs";
 import jwt from 'jsonwebtoken';
-
-class AppError extends Error {
-    constructor(message, status) {
-        super(message);
-        this.status = status;
-    }
-}
+import AppError from "../utils/errors.js";
 
 const registerUser = async (userData) => {
     if (hasNullValues(userData))

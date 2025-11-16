@@ -1,8 +1,10 @@
-import { TextField, Stack, Select, MenuItem } from "@mui/material";
-import { useHouseholdContext } from "../../management/households/HouseholdFormContext";
+import { TextField, Stack, Select, MenuItem, TextareaAutosize } from "@mui/material";
+import { useHouseholdContext } from "../HouseholdFormContext";
+import { useState } from "react";
+import { ErrorMessage } from "../../../ui/ErrorMessage";
 
-const HouseholdInfo = () => {
-    const { newHousehold, setNewHousehold } = useHouseholdContext();
+const HouseholdInfo = ({ newHousehold, setNewHousehold, householdError }) => {
+    // const { newHousehold, setNewHousehold, householdError } = useHouseholdContext();
 
     const handleHouseholdChange = (e) => {
         const { name, value } = e.target;
@@ -22,6 +24,7 @@ const HouseholdInfo = () => {
                 select
                 value={newHousehold.socio_economic_class}
                 onChange={handleHouseholdChange}
+                required
             >
                 <MenuItem value="Low Income">Low Income</MenuItem>
                 <MenuItem value="Middle Income">Middle Income</MenuItem>
@@ -55,6 +58,14 @@ const HouseholdInfo = () => {
                 type="number"
                 onChange={handleHouseholdChange}
             />
+            <TextField 
+                name="address" 
+                value={newHousehold.address}
+                label='Home Address'
+                onChange={handleHouseholdChange}
+                required
+            />
+            {householdError && <ErrorMessage message={householdError} />}
         </Stack>
     )
 }

@@ -1,24 +1,29 @@
 import { Stack, TextField, Button, Grid, MenuItem, Avatar, Box } from '@mui/material';
 import InitialResidentsList from './InitialResidentsList';
-import { useHouseholdContext } from '../../management/households/HouseholdFormContext';
+import { useHouseholdContext } from '../HouseholdFormContext';
 import { useState } from 'react';
+import { ErrorMessage } from '../../../ui/ErrorMessage';
 
-const InitialResidentsForm = () => {
-    const { handleSaveResident } = useHouseholdContext();
+const InitialResidentsForm = ({ handleSaveResident, hasHead }) => {
+    // const { handleSaveResident, hasHead } = useHouseholdContext();
 
-    const [newResident, setNewResident] = useState({
-        photo: '',
-        firstname: '',
-        middlename: '',
-        lastname: '',
+    const residentObj = {
+        photo: null,
+        first_name: '',
+        middle_name: '',
+        last_name: '',
         email: '',
-        phone_number: '',
-        date: '',
+        phone: '',
+        date_of_birth: '',
         place_of_birth: '',
         relationship: '',
         gender: '',
         civil_status: ''
-    });
+    }
+
+    const [newResident, setNewResident] = useState(residentObj);
+    const [error, setError] = useState("");
+    const [previewImage, setPreviewImage] = useState(null);
 
     const handleResidentChange = (e) => {
         const { name, value } = e.target;
@@ -27,10 +32,22 @@ const InitialResidentsForm = () => {
 
     const handlePhotoChange = (e) => {
         const file = e.target.files[0];
+        setNewResident((p) => ({...p, photo: file}));
+        setPreviewImage(URL.createObjectURL(file));
+    }
 
-        const imageFile = URL.createObjectURL(file);
+    const saveResident = () => {
+        for (let key in newResident) {
+            if (newResident[key] === null || newResident[key] === '') {
+                if (key !== "photo") setError("All fields are required.");
+                else setError("Photo is required.");
+                return
+            }
+        }
 
-        setNewResident((p) => ({...p, photo: imageFile}));
+        setError("");
+        handleSaveResident(newResident);
+        setNewResident(residentObj);
     }
 
     return (
@@ -45,7 +62,7 @@ const InitialResidentsForm = () => {
                 <Grid size={12}>
                     <Box display="flex" flexDirection="column" alignItems="center" gap={2}>
                         <Avatar
-                            src={newResident.photo || import.meta.env.VITE_API_URL}
+                            src={previewImage || import.meta.env.VITE_API_URL}
                             alt="Resident photo"
                             sx={{ width: 120, height: 120 }}
                         />
@@ -65,28 +82,31 @@ const InitialResidentsForm = () => {
                 <Grid size={4}>
                     <TextField 
                         name='firstname'
-                        value={newResident.firstname}
+                        value={newResident.first_name}
                         label="First Name"
                         fullWidth 
                         onChange={handleResidentChange}
+                        required
                     />
                 </Grid>
                 <Grid size={4}>
                     <TextField 
                         name='middlename'
-                        value={newResident.middlename}
+                        value={newResident.middle_name}
                         label="Middle Name"
                         fullWidth
                         onChange={handleResidentChange}
+                        required
                     />
                 </Grid>
                 <Grid size={4}>
                     <TextField 
                         name='lastname'
-                        value={newResident.lastname}
+                        value={newResident.last_name}
                         label="Last Name"
                         fullWidth
                         onChange={handleResidentChange}
+                        required
                     />
                 </Grid>
 
@@ -98,25 +118,28 @@ const InitialResidentsForm = () => {
                         type='email' 
                         fullWidth
                         onChange={handleResidentChange}
+                        required
                     />
                 </Grid>
                 <Grid size={6}>
                     <TextField 
-                        name='phone_number'
-                        value={newResident.phone_number}
+                        name='phone'
+                        value={newResident.phone}
                         label='Phone number'
                         fullWidth
                         onChange={handleResidentChange}
+                        required
                     />
                 </Grid>
 
                 <Grid size={6}>
                     <TextField 
                         name='date'
-                        value={newResident.date}
+                        value={newResident.date_of_birth}
                         type='date'
                         fullWidth 
                         onChange={handleResidentChange}
+                        required
                     />
                 </Grid>
                 <Grid size={6}>
@@ -126,6 +149,7 @@ const InitialResidentsForm = () => {
                         label="Place of birth"
                         fullWidth 
                         onChange={handleResidentChange}
+                        required
                     />
                 </Grid>
 
@@ -137,13 +161,14 @@ const InitialResidentsForm = () => {
                         fullWidth
                         select
                         onChange={handleResidentChange}
+                        required
                     >
-                        <MenuItem value='head'>Head</MenuItem>
-                        <MenuItem value='spouse'>Spouse</MenuItem>
-                        <MenuItem value='child'>Child</MenuItem>
-                        <MenuItem value='parent'>Parent</MenuItem>
-                        <MenuItem value='sibling'>Sibling</MenuItem>
-                        <MenuItem value='other'>Other</MenuItem>
+                        {!hasHead && <MenuItem value='Head'>Head</MenuItem>}
+                        <MenuItem value='Spouse'>Spouse</MenuItem>
+                        <MenuItem value='Child'>Child</MenuItem>
+                        <MenuItem value='Parent'>Parent</MenuItem>
+                        <MenuItem value='Sibling'>Sibling</MenuItem>
+                        <MenuItem value='Other'>Other</MenuItem>
                     </TextField>
                 </Grid>
                 <Grid size={4}>
@@ -154,10 +179,11 @@ const InitialResidentsForm = () => {
                         fullWidth
                         select
                         onChange={handleResidentChange}
+                        required
                     >
-                        <MenuItem value='male'>Male</MenuItem>
-                        <MenuItem value='female'>Female</MenuItem>
-                        <MenuItem value='other'>Other</MenuItem>
+                        <MenuItem value='Male'>Male</MenuItem>
+                        <MenuItem value='Female'>Female</MenuItem>
+                        <MenuItem value='Other'>Other</MenuItem>
                     </TextField>
                 </Grid>
                 <Grid size={4}>
@@ -168,10 +194,11 @@ const InitialResidentsForm = () => {
                         fullWidth
                         select
                         onChange={handleResidentChange}
+                        required
                     >
-                        <MenuItem value='single'>Single</MenuItem>
-                        <MenuItem value='married'>Married</MenuItem>
-                        <MenuItem value='windowed'>Windowed</MenuItem>
+                        <MenuItem value='Single'>Single</MenuItem>
+                        <MenuItem value='Married'>Married</MenuItem>
+                        <MenuItem value='Windowed'>Windowed</MenuItem>
                     </TextField>
                 </Grid>
 
@@ -180,13 +207,16 @@ const InitialResidentsForm = () => {
                         variant='contained'
                         color='primary'
                         fullWidth
-                        onClick={() => handleSaveResident(newResident)}
+                        onClick={saveResident}
                     >
                         Add Resident
                     </Button>
                 </Grid>
+
+                {error && (<Grid size={12}>
+                    <ErrorMessage message={error} />
+                </Grid>)}
             </Grid>
-            <InitialResidentsList />
         </>
     )
 }
