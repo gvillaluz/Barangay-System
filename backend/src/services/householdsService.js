@@ -1,36 +1,57 @@
-import { getHouseholdsDescending, insertHousehold, updateHouseholdById, updateHouseholdHead } from "../models/householdsModel";
-import { insertListOfResidents } from "../models/residentsModel";
-import pool from "../config/db";
-import AppError from "../utils/errors";
+import { getHouseholdsDescending, insertHousehold, updateHouseholdById, updateHouseholdHead } from "../models/householdsModel.js";
+import { insertListOfResidents } from "../models/residentsModel.js";
+import pool from "../config/db.js";
+import AppError from "../utils/errors.js";
 
 const getHouseholdsInDesc = async () => await getHouseholdsDescending();
 
-const createHouseholdAndResidents = async (data) => {
-    const { household, residents } = data;
-    const conn = pool.getConnection();
+const createHouseholdAndResidents = async (data, files) => {
+    const conn = await pool.getConnection();
 
     try {
-        await conn.beginTransaction();
-    
-        const householdResult = await insertHousehold(conn, household);
+        const householdData = JSON.parse(data.household);
+        const residents = JSON.parse(data.residents);
 
-        console.log(householdResult);
+        if (files && files.length > 0) {
+            residents.forEach((res, i) => {
+                res.photo = files[i] ? `/uploads/residents/${files[i].filename}` : null;
+            });;
+        }
+
+        const household = [
+            null,
+            householdData.socio_economic_classification,
+            householdData.senior_citizen,
+            householdData.pwds,
+            householdData.solo_parents,
+            householdData.indigents,
+            householdData.address
+        ]
+    
+        await conn.beginTransaction();
+
+        const householdResult = await insertHousehold(conn, household);
 
         if (!householdResult.insertId)
             throw new AppError("Failed to save household.", 500);
 
         const householdNo = `HH-${householdResult.insertId}`;
 
+        const updateHouseholdResult = await updateHouseholdHead(conn, [householdNo, householdResult.insertId]);
+
+        if (!updateHouseholdResult.affectedRows)
+            throw new AppError("Failed to update household head.", 404);
+
         const values = residents.map(r => [
-            r.firstname,
-            r.lastname,
-            r.middlename,
+            r.first_name,
+            r.last_name,
+            r.middle_name,
             r.date_of_birth, 
             r.gender,
             r.civil_status,
             r.place_of_birth,
             r.relationship,
-            household.address,
+            householdData.address,
             householdNo,
             householdResult.insertId,
             r.phone_number,
@@ -42,17 +63,6 @@ const createHouseholdAndResidents = async (data) => {
 
         if (!residentResult.affectedRows || residentResult.affectedRows !== residents.length)
             throw new AppError("Failed to save all residents.", 404);
-
-        const headIndex = residents.findIndex(r => r.relationship === "Head");
-
-        if (headIndex === -1) throw new AppError("No head of household found among residents.", 400);
-
-        const householdHead = residentResult.insertId + headIndex;
-
-        const [updateHouseholdResult] = await updateHouseholdHead(conn, [householdHead, householdResult.insertId]);
-
-        if (!updateHouseholdResult.affectedRows)
-            throw new AppError("Failed to update household head.", 404);
 
         await conn.commit();
 

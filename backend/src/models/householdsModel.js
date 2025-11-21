@@ -1,12 +1,24 @@
-import pool from "../config/db";
+import pool from "../config/db.js";
 
 export const getHouseholdsDescending = async () => {
-    const [result] = await pool.query("SELECT * FROM households ORDER BY id DESC");
+    const query = `
+        SELECT
+            h.*,
+            r.id AS resident_head_id,
+            r.first_name AS resident_first_name,
+            r.last_name AS resident_last_name
+        FROM households h
+        LEFT JOIN residents r
+            ON h.household_no = r.household_no
+            AND r.relationship = 'Head'
+        ORDER BY h.id DESC
+    `;
+    const [result] = await pool.query(query);
     return result;
 }
 
 export const insertHousehold = async (conn, householdData) => {
-    const query = "INSERT INTO (household_no, head_of_family, socio_econimic_classification, senior_citizen, pwds, solo_parents, indigents) VALUES ?";
+    const query = "INSERT INTO households (household_no, socio_economic_classification, senior_citizens, pwds, solo_parents, indigents, address) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
     const [result] = await conn.query(query, householdData);
 
@@ -14,7 +26,11 @@ export const insertHousehold = async (conn, householdData) => {
 }
 
 export const updateHouseholdHead = async (conn, values) => {
-    const query = "UPDATE households SET head_of_family = ? WHERE household_id = ?";
+    const query = `
+        UPDATE households 
+        SET household_no = ?
+        WHERE id = ?
+    `;
 
     const [result] = await conn.query(query, values);
 
@@ -25,7 +41,7 @@ export const updateHouseholdById = async (setFields, values) => {
     const query = `
         UPDATE households
         SET ${setFields}
-        WHERE household_id = ?
+        WHERE id = ?
     `;
 
     const [result] = await pool.query(query, values);

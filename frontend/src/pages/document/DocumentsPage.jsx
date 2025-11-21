@@ -27,7 +27,7 @@ export default function DocumentsPage() {
 
   const loadDocs = async () => {
     const res = await getDocuments();
-    setDocuments(res.data);
+    setDocuments(res.data.records);
   };
 
   useEffect(() => {
@@ -60,7 +60,7 @@ export default function DocumentsPage() {
       </Dialog>
 
       <Table>
-        <TableHead>
+        <TableHead sx={{ bgcolor: "#f5f5f5" }}>
           <TableRow>
             <TableCell>Type</TableCell>
             <TableCell>Resident</TableCell>

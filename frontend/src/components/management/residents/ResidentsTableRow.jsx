@@ -1,7 +1,7 @@
 import { TableRow, TableCell, Box, Avatar, Button } from "@mui/material";
 import { isAdmin } from "../../../utils/auth";
 
-const ResidentTableRow = ({ res }) => {
+const ResidentTableRow = ({ res, setEditing, setOpenForm, handleDelete }) => {
     return (
         <TableRow>
             <TableCell>
@@ -19,6 +19,12 @@ const ResidentTableRow = ({ res }) => {
             </TableCell>
             <TableCell>
                 {res.first_name} {res.middle_name || ''} {res.last_name}
+            </TableCell>
+            <TableCell>
+                {res.household_no}
+            </TableCell>
+            <TableCell>
+                {res.relationship}
             </TableCell>
             <TableCell>
                 {res.address}

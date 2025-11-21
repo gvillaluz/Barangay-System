@@ -19,10 +19,10 @@ const HouseholdInfo = ({ newHousehold, setNewHousehold, householdError }) => {
             }}
         >
             <TextField 
-                name="socio_economic_class"
+                name="socio_economic_classification"
                 label="Socio Economic Classification"
                 select
-                value={newHousehold.socio_economic_class}
+                value={newHousehold.socio_economic_classification}
                 onChange={handleHouseholdChange}
                 required
             >

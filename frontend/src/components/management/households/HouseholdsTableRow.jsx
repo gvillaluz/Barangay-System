@@ -5,7 +5,7 @@ const HouseholdTableRow = ({ household, handleDelete }) => {
     return (
         <TableRow>
             <TableCell>{household.household_no}</TableCell>
-            <TableCell>{household.head_of_family}</TableCell>
+            <TableCell>{household.resident_first_name + " " + household.resident_last_name}</TableCell>
             <TableCell>{household.socio_economic_classification}</TableCell>
             <TableCell>{household.senior_citizens}</TableCell>
             <TableCell>{household.pwds}</TableCell>

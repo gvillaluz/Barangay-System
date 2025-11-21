@@ -20,7 +20,7 @@ const initialForm = {
   first_name: '',
   middle_name: '',
   last_name: '',
-  dob: '',
+  date_of_birth: '',
   gender: '',
   civil_status: '',
   place_of_birth: '',
@@ -28,6 +28,7 @@ const initialForm = {
   household_no: '',
   phone: '',
   email: '',
+  relationship: '',
   photo: null
 }
 
@@ -88,7 +89,7 @@ export default function ResidentForm({ open, resident, onClose }) {
       setLoading(false)
       const msg = err?.response?.data?.message || err.message || 'Failed to save resident'
       setError(msg)
-      console.log(msg)
+      console.log("Error in saving: " + msg)
     }
   }
 
@@ -159,6 +160,9 @@ export default function ResidentForm({ open, resident, onClose }) {
           </Grid>
           <Grid item xs={12}>
             <TextField label="Email" name="email" value={form.email} onChange={handleChange} fullWidth />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField label="Relationship to Head" name="relationship" value={form.relationship} onChange={handleChange} fullWidth />
           </Grid>
         </Grid>
       </DialogContent>

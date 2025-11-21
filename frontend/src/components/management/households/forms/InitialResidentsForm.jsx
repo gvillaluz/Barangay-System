@@ -48,6 +48,7 @@ const InitialResidentsForm = ({ handleSaveResident, hasHead }) => {
         setError("");
         handleSaveResident(newResident);
         setNewResident(residentObj);
+        setPreviewImage(null);
     }
 
     return (
@@ -81,7 +82,7 @@ const InitialResidentsForm = ({ handleSaveResident, hasHead }) => {
 
                 <Grid size={4}>
                     <TextField 
-                        name='firstname'
+                        name='first_name'
                         value={newResident.first_name}
                         label="First Name"
                         fullWidth 
@@ -91,7 +92,7 @@ const InitialResidentsForm = ({ handleSaveResident, hasHead }) => {
                 </Grid>
                 <Grid size={4}>
                     <TextField 
-                        name='middlename'
+                        name='middle_name'
                         value={newResident.middle_name}
                         label="Middle Name"
                         fullWidth
@@ -101,7 +102,7 @@ const InitialResidentsForm = ({ handleSaveResident, hasHead }) => {
                 </Grid>
                 <Grid size={4}>
                     <TextField 
-                        name='lastname'
+                        name='last_name'
                         value={newResident.last_name}
                         label="Last Name"
                         fullWidth
@@ -134,7 +135,7 @@ const InitialResidentsForm = ({ handleSaveResident, hasHead }) => {
 
                 <Grid size={6}>
                     <TextField 
-                        name='date'
+                        name='date_of_birth'
                         value={newResident.date_of_birth}
                         type='date'
                         fullWidth 

@@ -8,11 +8,9 @@ import { hasNullValue } from "../../../utils/validation";
 import { useHouseholdContext } from "./HouseholdFormContext";
 import { createHousehold } from "../../../api/householdsApi";
 
-const HouseholdFormDialog = ({ openFormDialog, setOpenFormDialog }) => {
-    // const { step, onClose, handleBack, handleNext, householdError } = useHouseholdContext();
-
+const HouseholdFormDialog = ({ openFormDialog, setOpenFormDialog, setHouseholds }) => {
     const household = {
-        socio_economic_class: '',
+        socio_economic_classification: '',
         senior_citizen: 0,
         pwds: 0,
         solo_parents: 0,
@@ -66,16 +64,19 @@ const HouseholdFormDialog = ({ openFormDialog, setOpenFormDialog }) => {
             }
 
             const response = await createHousehold(payload);
-            console.log(response.data);
+            
+            setStep(1);
+            setHouseholds(prev => [
+                { ...newHousehold, id: response.householdId}, 
+                ...prev
+            ]);
+            setNewHousehold(household);
+            setInitialResidents([]);
+            setOpenFormDialog(false);
         } catch (err) {
             console.log("ERROR IN SAVING : " + err)
         }
     }
-
-    // const handleClose = () => {
-    //     setOpenFormDialog(false);
-    //     onClose();
-    // }
 
     return (
         <Dialog

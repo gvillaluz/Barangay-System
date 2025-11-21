@@ -1,4 +1,4 @@
-import residentsService from "../services/residentsService";
+import residentsService from "../services/residentsService.js";
 
 export const getResidents = async (req, res) => {
     try {
@@ -33,7 +33,7 @@ export const createResident = async (req, res) => {
             residentId
         });
     } catch (err) {
-        return res.status(err.status).json({
+        return res.status(err.status || 500).json({
             success: false,
             message: err.message
         });
@@ -42,9 +42,30 @@ export const createResident = async (req, res) => {
 
 export const updateResident = async (req, res) => {
     try {
-        
+        await residentsService.updateResident(req.body, req.file, req.params.id);
+
+        return res.status(201).json({
+            success: true,
+            message: "Resident updated successfully."
+        });
     } catch (err) {
-        return res.status(err.status).json({
+        return res.status(err.status || 500).json({
+            success: false,
+            message: err.message
+        });
+    }
+}
+
+export const deleteResident = async (req, res) => {
+    try {
+        await residentsService.deleteResident(req.params.id);
+
+        return res.status(200).json({
+            success: true,
+            message: "Resident deleted successfully."
+        });
+    } catch (err) {
+        return res.status(err.status || 500).json({
             success: false,
             message: err.message
         });

@@ -21,7 +21,8 @@ const HouseholdsPage = () => {
 
   const loadData = async () => {
     const res = await getHouseholds();
-    setHouseholds(res.data);
+    console.log(res)
+    setHouseholds(res.data.households);
   };
 
   const handleAdd = async (data) => {
@@ -81,9 +82,11 @@ const HouseholdsPage = () => {
         handleDelete={handleDelete}
       />
 
-      <HouseholdProvider>
-        <HouseholdFormDialog openFormDialog={openFormDialog} setOpenFormDialog={setOpenFormDialog} />
-      </HouseholdProvider>
+      <HouseholdFormDialog 
+        openFormDialog={openFormDialog} 
+        setOpenFormDialog={setOpenFormDialog} 
+        setHouseholds={setHouseholds}
+      />
     </Container>
   );
 };

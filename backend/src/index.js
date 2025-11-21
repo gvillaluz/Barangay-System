@@ -24,6 +24,12 @@ app.use("/api/households", householdsRoutes);
 app.use("/api/documents", documentsRoutes);
 app.use('/api/residents', residentsRoutes);
 
+app.post("/api/test", (req, res) => {
+  console.log("TEST HIT");
+  res.send("OK");
+});
+
+
 // Root test
 app.get('/', (req, res) => {
   res.send('Barangay Information System API is running ✅')

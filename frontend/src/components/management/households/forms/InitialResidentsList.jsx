@@ -28,9 +28,9 @@ const InitialResidentsList = ({ initialResidents, handleDeleteResident }) => {
                 <TableBody>
                     {initialResidents.map((resident, index) => (
                         <TableRow key={index}>
-                            <TableCell>{resident.firstname}</TableCell>
-                            <TableCell>{resident.middlename}</TableCell>
-                            <TableCell>{resident.lastname}</TableCell>
+                            <TableCell>{resident.first_name}</TableCell>
+                            <TableCell>{resident.middle_name}</TableCell>
+                            <TableCell>{resident.last_name}</TableCell>
                             <TableCell>{resident.relationship}</TableCell>
                             <TableCell>
                                 <Box>

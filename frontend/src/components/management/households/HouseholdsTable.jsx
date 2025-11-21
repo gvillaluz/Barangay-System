@@ -4,7 +4,7 @@ import { Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material'
 const HouseholdTable = ({ households, handleDelete }) => {
     return (
         <Table sx={{ mt: 2 }}>
-            <TableHead>
+            <TableHead sx={{ bgcolor: "#f5f5f5" }}>
                 <TableRow>
                     <TableCell>Household No</TableCell>
                     <TableCell>Head of Family</TableCell>

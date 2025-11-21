@@ -1,4 +1,4 @@
-import pool from "../config/db";
+import pool from "../config/db.js";
 
 export const getAllResidents = async () => {
     const query = `SELECT * FROM residents`;
@@ -34,9 +34,16 @@ export const updateResidentById = async (setFields, values) => {
     const query = `
         UPDATE residents
         SET ${setFields}
-        WHERE household_id = ?
+        WHERE id = ?
     `;
 
     const [result] = await pool.query(query, values);
+    return result;
+}
+
+export const deleteResidentById = async (id) => {
+    const query = `DELETE FROM residents WHERE id = ?`;
+
+    const [result] = await pool.query(query, [id]);
     return result;
 }

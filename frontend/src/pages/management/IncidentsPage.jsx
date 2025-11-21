@@ -17,7 +17,7 @@ const IncidentsPage = () => {
 
   const loadIncidents = async () => {
     const res = await getIncidents();
-    setIncidents(res.data);
+    setIncidents(res.data.records);
   };
 
   const handleAdd = async (formData) => {
@@ -53,7 +53,7 @@ const IncidentsPage = () => {
       )}
 
       <Table sx={{ mt: 2 }}>
-        <TableHead>
+        <TableHead sx={{ bgcolor: "#f5f5f5" }}>
           <TableRow>
             <TableCell>Date</TableCell>
             <TableCell>Type</TableCell>
